@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "node .": "npm strart main.js"
+    "start": "node main.js"
   },
   "author": "Vulcan#4933",
   "license": "ISC",
