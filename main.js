@@ -9,7 +9,10 @@ client.once('ready', () => {
 
 client.on('guildMemberAdd', member => {
     const channel = member.guild.channels.find(channel => channel.name === "welcome");
-    if(!channel)return;
+    if(!channel){
+        console.log("Channel Not Found");
+        return;
+    };
 
     channel.send('Welcome to Roy Ampersand, $(member), please read the rules before proceeding!')
 })
