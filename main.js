@@ -15,10 +15,12 @@ for(const file of commandFiles){
     client.commands.set(command.name, command);
 }
 
-client.once('ready', () => {
-    console.log('Roy Ampersand is online!')
+client.on('ready', () => {
+    console.log(`Logged in as ${client.user.tag}`);
     client.user.setActivity('The RA Community',{type: "LISTENING"}).catch(console.error);
 });
+
+
 
 client.on('message', message => {
     if(!message.content.startsWith(prefix) || message.author.bot)return;
@@ -37,10 +39,14 @@ client.on('message', message => {
         client.commands.get('rules').execute(message, Discord);
     }
     else if(command === "kick"){
-        client.commands.get('kick').execute(message, args);
+        if(message.author.role.name === 'HyperVisor' || message.author.role.name === 'Moderator'){
+            client.commands.get('kick').execute(message, args);
+        }
     }
     else if(command === "ban"){
-        client.commands.get('ban').execute(message, args);
+        if(message.author.role.name === 'HyperVisor' || message.author.role.name === 'Moderator'){
+            client.commands.get('ban').execute(message, args);
+        }
     }
     else if(command === "help"){
         client.commands.get('help').execute(message, Discord);   
@@ -49,4 +55,4 @@ client.on('message', message => {
 });
 
 
-client.login('ODE5NzAxNzI4NzM5NzIxMjM3.YEqcuQ.qJnW_v9EIdtFpatGiEU-7Ci-oXc')
+client.login('ODE5NzAxNzI4NzM5NzIxMjM3.YEqcuQ.tekjFpLtC08BesFbn5GJRpGrShM')
