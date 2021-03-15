@@ -30,7 +30,7 @@ client.on('message', message => {
     const user = "<@"+message.author.id+">"+"!";
 
     if(command === "ping"){
-        client.commands.get('ping').execute(message, args);
+        message.channel.send(`🏓Latency is ${Date.now() - message.createdTimestamp}ms. API Latency is ${Math.round(client.ws.ping)}ms`);
     }
     else if(command === "greet"){
         client.commands.get('greet').execute(message, user);
@@ -39,20 +39,24 @@ client.on('message', message => {
         client.commands.get('rules').execute(message, Discord);
     }
     else if(command === "kick"){
-        if(message.author.role.name === 'HyperVisor' || message.author.role.name === 'Moderator'){
+        if(message.member.roles.cache.find(r => r.name === "HyperVisor") || message.member.roles.cache.find(r => r.name === "Moderator")){
             client.commands.get('kick').execute(message, args);
+        }else{
+            message.channel.send("You are not a Moderator or an Admin, contact the staff for concerns.")
         }
     }
     else if(command === "ban"){
-        if(message.author.role.name === 'HyperVisor' || message.author.role.name === 'Moderator'){
+        if(message.member.roles.cache.find(r => r.name === "HyperVisor")|| message.member.roles.cache.find(r => r.name === "Moderator")){
             client.commands.get('ban').execute(message, args);
+        }else{
+            message.channel.send("You are not a Moderator or an Admin, contact the staff for concerns.")
         }
     }
     else if(command === "help"){
-        client.commands.get('help').execute(message, Discord);   
+        client.commands.get('help').execute(message, Discord);
     }
 
 });
 
 
-client.login('ODE5NzAxNzI4NzM5NzIxMjM3.YEqcuQ.tekjFpLtC08BesFbn5GJRpGrShM')
+client.login('ODE5NzAxNzI4NzM5NzIxMjM3.YEqcuQ.KstJz0IVLCC_rCzx_H3EHcahvUw')
