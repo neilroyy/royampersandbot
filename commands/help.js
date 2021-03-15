@@ -10,7 +10,7 @@ module.exports = {
                     .addFields(
                         {name: 'greet' , value: 'A simple greeting from us.'},
                         {name: 'kick/ban' , value: 'Basic moderation tools.'},
-                        {name: 'ping' , value: 'Pong!'},
+                        {name: 'ping' , value: 'Displays API Latency.'},
                         {name: 'rules' , value: 'Displays the rules of the server.'},
                     )
                     .setImage('https://contenthub-static.grammarly.com/blog/wp-content/uploads/2018/05/how-to-ask-for-help.jpg');
