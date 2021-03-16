@@ -38,6 +38,9 @@ client.on('message', message => {
     else if(command === "rules"){
         client.commands.get('rules').execute(message, Discord);
     }
+    else if(command === "clear"){
+        client.commands.get('clear').execute(message, args);
+    }
     else if(command === "kick"){
         if(message.member.roles.cache.find(r => r.name === "HyperVisor") || message.member.roles.cache.find(r => r.name === "Moderator")){
             client.commands.get('kick').execute(message, args);
@@ -59,4 +62,4 @@ client.on('message', message => {
 });
 
 
-client.login('ODE5NzAxNzI4NzM5NzIxMjM3.YEqcuQ.KstJz0IVLCC_rCzx_H3EHcahvUw')
+client.login('ODE5NzAxNzI4NzM5NzIxMjM3.YEqcuQ.pTAaHsEm26xrFKB3ZOEb3f0_q6M')
