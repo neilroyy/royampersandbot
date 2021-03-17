@@ -41,6 +41,12 @@ client.on('message', message => {
     else if(command === "clear"){
         client.commands.get('clear').execute(message, args);
     }
+    else if(command === "play"){
+        client.commands.get('play').execute(message, args);
+    }
+    else if(command === "leave"){
+        client.commands.get('leave').execute(message, args);
+    }
     else if(command === "kick"){
         if(message.member.roles.cache.find(r => r.name === "HyperVisor") || message.member.roles.cache.find(r => r.name === "Moderator")){
             client.commands.get('kick').execute(message, args);
