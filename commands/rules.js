@@ -1,7 +1,7 @@
 module.exports = {
     name: 'rules',
     description: "displays the RA Server Rules",
-    execute(message, Discord){
+    execute(client, message, args, Discord){
        
             const embed = new Discord.MessageEmbed()
                     .setColor('#E539FF')

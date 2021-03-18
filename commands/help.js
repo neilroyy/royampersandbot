@@ -1,7 +1,7 @@
 module.exports = {
     name: 'help',
     description: "displays the command help for this bot",
-    execute(message, Discord){
+    execute(client, message ,args, Discord){
        
             const embed = new Discord.MessageEmbed()
                     .setColor('#E539FF')
