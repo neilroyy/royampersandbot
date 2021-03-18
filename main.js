@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-
+require('dotenv').config();
 const client = new Discord.Client();
 
 const fs = require('fs');
@@ -11,4 +11,4 @@ client.events = new Discord.Collection();
     require(`./handlers/${handler}`)(client, Discord);
 });
 
-client.login('ODE5NzAxNzI4NzM5NzIxMjM3.YEqcuQ.nayRzdx5085ofuW-J86HWwI74sI');
+client.login(process.env.AUTH_TOKEN);
