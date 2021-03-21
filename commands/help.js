@@ -1,5 +1,6 @@
 module.exports = {
     name: 'help',
+    aliases: ['h', 'guide'],
     description: "displays the command help for this bot",
     execute(client, message ,args, Discord){
        

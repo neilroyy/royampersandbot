@@ -1,5 +1,6 @@
 module.exports = {
     name : "clear",
+    aliases: ['clean', 'delete'],
     description: "clears messages",
     async execute(client, message ,args, Discord){
         if(!args[0])return message.reply("Please enter the no. of texts to be cleared.");
