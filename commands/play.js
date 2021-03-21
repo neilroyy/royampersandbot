@@ -1,12 +1,13 @@
 const ytdl = require('ytdl-core');
 const ytSearch = require('yt-search');
+const message = require('../events/guild/message');
 
 //Global queue for your bot. Every server will have a key and value pair in this map. { guild.id, queue_constructor{} }
 const queue = new Map();
 
 module.exports = {
     name: 'play',
-    aliases: ['skip', 'stop'], //We are using aliases to run the skip and stop command follow this tutorial if lost: https://www.youtube.com/watch?v=QBUJ3cdofqc
+    aliases: ['skip', 'stop', 'queue', 'q', 'p', 'n', 'np'], //We are using aliases to run the skip and stop command follow this tutorial if lost: https://www.youtube.com/watch?v=QBUJ3cdofqc
     cooldown: 0,
     description: 'Advanced music bot',
     async execute(client, message, cmd, args, Discord, user){
@@ -23,7 +24,7 @@ module.exports = {
         const server_queue = queue.get(message.guild.id);
 
         //If the user has used the play command
-        if (cmd === 'play'){
+        if (cmd === 'play'|| cmd === 'p'){
             if (!args.length) return message.channel.send('You need to send the second argument!');
             let song = {};
 
@@ -64,7 +65,7 @@ module.exports = {
                 try {
                     const connection = await voice_channel.join();
                     queue_constructor.connection = connection;
-                    video_player(message.guild, queue_constructor.songs[0]);
+                    video_player(message.guild, queue_constructor.songs[0], Discord);
                 } catch (err) {
                     queue.delete(message.guild.id);
                     message.channel.send('There was an error connecting!');
@@ -72,17 +73,47 @@ module.exports = {
                 }
             } else{
                 server_queue.songs.push(song);
-                return message.channel.send(`👍 **${song.title}** added to queue!`);
+                const embed = new Discord.MessageEmbed()
+                .setColor('RANDOM')
+                .setDescription(`__*${song.title}*__ added to queue!`)
+                return message.channel.send(embed);
             }
         }
 
-        else if(cmd === 'skip') skip_song(message, server_queue);
+        else if(cmd === 'skip' || cmd === 'n') skip_song(message, server_queue);
         else if(cmd === 'stop') stop_song(message, server_queue);
+        else if(cmd === 'queue'|| cmd === 'q') display_queue(message, server_queue, Discord);
+        else if(cmd === 'np') now_playing(message, server_queue, Discord);
     }
     
 }
 
-const video_player = async (guild, song) => {
+const now_playing = async (message, server_queue, Discord) => {
+    const song_queue = queue.get(message.guild.id);
+    const embed = new Discord.MessageEmbed()
+    .setColor('RANDOM')
+    .setTitle('Now Playing')
+    .setDescription(`${song_queue.songs[0].title}`);
+    message.channel.send(embed);
+}
+
+const display_queue = async (message, server_queue, Discord) => {
+    var count = 1;
+    var string = "";
+    for (const song in server_queue.songs){
+        var str = (count+'> '+server_queue.songs[song].title+'\n');
+        count++;
+        string += str;
+    }
+    const embed = new Discord.MessageEmbed()
+    .setColor('RANDOM')
+    .setDescription(string);
+
+    message.channel.send(embed);
+
+}
+
+const video_player = async (guild, song, Discord) => {
     const song_queue = queue.get(guild.id);
 
     //If no song is left in the server queue. Leave the voice channel and delete the key and value pair from the global queue.
@@ -95,9 +126,13 @@ const video_player = async (guild, song) => {
     song_queue.connection.play(stream, { seek: 0, volume: 0.5 })
     .on('finish', () => {
         song_queue.songs.shift();
-        video_player(guild, song_queue.songs[0]);
+        video_player(guild, song_queue.songs[0], Discord);
     });
-    await song_queue.text_channel.send(`🎶 Now playing **${song.title}**`)
+    const embed = new Discord.MessageEmbed()
+    .setColor('RANDOM')
+    .setTitle('Now Playing')
+    .setDescription(`${song_queue.songs[0].title}`);
+    await song_queue.text_channel.send(embed);
 }
 
 const skip_song = (message, server_queue) => {
