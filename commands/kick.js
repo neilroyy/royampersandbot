@@ -1,7 +1,7 @@
 module.exports = {
     name : 'kick',
     description : 'kick members moderation command',
-    execute(client, message ,args, Discord){
+    execute(client, message, cmd, args, Discord, user){
 
         const member = message.mentions.users.first();
 
