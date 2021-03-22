@@ -14,6 +14,8 @@ module.exports = (Discord, client, message) => {
                     client.commands.find(a => a.aliases && a.aliases.includes(cmd));
     const user = "<@"+message.author.id+">"+"!";
 
+    if(!command)return;
+
     if(!cooldowns.has(command.name)){
         cooldowns.set(command.name, new Discord.Collection)
     }
