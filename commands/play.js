@@ -20,7 +20,8 @@ module.exports = {
     "remove",
     "loop",
     "ls",
-  ], //We are using aliases to run the skip and stop command follow this tutorial if lost: https://www.youtube.com/watch?v=QBUJ3cdofqc
+    "move",
+  ],
   cooldown: 0,
   description: "Advanced music bot",
   async execute(client, message, cmd, args, Discord, user) {
@@ -111,7 +112,24 @@ module.exports = {
       remove_song(message, server_queue, Discord, args);
     else if (cmd === "loop") loop_queue(message, Discord);
     else if (cmd === "ls") loop_song(message, Discord);
+    else if (cmd === "move") move_song(message, server_queue, args, Discord);
   },
+};
+
+const move_song = async (message, server_queue, args, Discord) => {
+  var moveFrom = parseInt(args[0]) - 1;
+  var moveTo = parseInt(args[1]) - 1;
+  var index;
+  const song = server_queue.songs[moveFrom];
+  server_queue.songs.splice(moveFrom, 1);
+  for (index = server_queue.songs.length + 1; index >= moveTo; index--) {
+    server_queue.songs[index] = server_queue.songs[index - 1];
+  }
+  server_queue.songs[moveTo] = song;
+  const embed = new Discord.MessageEmbed()
+    .setColor("RANDOM")
+    .setDescription(song.title + " moved to position " + parseInt(args[1]));
+  message.channel.send(embed);
 };
 
 const loop_song = async (message, Discord) => {
@@ -186,9 +204,11 @@ const display_queue = async (message, server_queue, Discord) => {
   var count = 1;
   var string = "";
   for (const song in server_queue.songs) {
-    var str = count + "> " + server_queue.songs[song].title + "\n";
-    count++;
-    string += str;
+    if (server_queue.songs[song] != undefined) {
+      var str = count + "> " + server_queue.songs[song].title + "\n";
+      count++;
+      string += str;
+    }
   }
   const embed = new Discord.MessageEmbed()
     .setColor("RANDOM")
